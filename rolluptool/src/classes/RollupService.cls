@@ -169,7 +169,7 @@ global with sharing class RollupService
 		if(Trigger.isUpdate)
 		{
 			// Master records to update
-			Set<Id> masterRecordIds = new Set<Id>();
+			Set<Id> masterRecordIds = new Set<Id>(); 
 			 
 			// Set of field names from the child used in the rollup to search for changes on
 			Set<String> fieldsToSearchForChanges = new Set<String>(); 
@@ -219,12 +219,12 @@ global with sharing class RollupService
 				   	processLookup = true;
 				if(lookup.RelationshipCriteriaFields__c!=null)
 					for(String criteriaField : lookup.RelationshipCriteriaFields__c.split('\r\n'))
-						if(fieldsChanged.contains(criteriaField))
-							processLookup = true;
+						if(fieldsChanged.contains(criteriaField)) {
+							processLookup = true; System.debug('AW need to process '+criteriaField);}
 				if(processLookup)
 					lookupsToProcess.add(lookup);
 			}
-			lookups = lookupsToProcess;
+			lookups = lookupsToProcess; 
 			
 			// Rollup child records and update master records 
 			if(lookupsToProcess.size()>0)
@@ -476,8 +476,8 @@ global with sharing class RollupService
 			// Produce a set of master Id's applicable to this context (parent only)			
 			Set<Id> ctxMasterIds = new Set<Id>();
 			for(Id masterId : masterRecordIds)
-				if(masterId.getSObjectType() == ctx.master)
-					ctxMasterIds.add(masterId);
+				if(masterId.getSObjectType() == ctx.master) {
+					ctxMasterIds.add(masterId); System.debug('AW updateMasterRollupsTrigger adding ID '+masterID);}
 			// Execute the rollup and process the resulting updated master records
 			for(SObject masterRecord : LREngine.rollup(ctx, ctxMasterIds)) 
 			{

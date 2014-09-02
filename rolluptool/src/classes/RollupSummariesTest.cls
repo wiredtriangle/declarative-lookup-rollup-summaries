@@ -27,268 +27,268 @@
 @IsTest
 private with sharing class RollupSummariesTest 
 {
-	// TODO: Write a test to validate the criteria fields validation
-	// ...		
+    // TODO: Write a test to validate the criteria fields validation
+    // ...      
 
 
-	// TODO: Write a test to validate the criteria fields are specified when criteria is specified
-	// ...		
-	
-	private testmethod static void testInsertActiveValidation()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Max Birthday for Contacts related to an Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Contact';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'LastCURequestDate';
-		rollupSummary.AggregateOperation__c = 'Count';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Apex Trigger ' + RollupSummaries.makeTriggerName(rollupSummary) + ' has not been deployed. Click Manage Child Trigger and try again.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(LookupRollupSummary__c.Active__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
-	}
-	
-	private testmethod static void testInsertParentObjectValidation()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'AccountX';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'Amount';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Object does not exist.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(LookupRollupSummary__c.ParentObject__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
-	}
-	
-	private testmethod static void testInsertChildObjectValidation()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'OpportunityX';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'Amount';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(2, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Object does not exist.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(LookupRollupSummary__c.ChildObject__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
-		System.assertEquals('Apex Trigger ' + RollupSummaries.makeTriggerName(rollupSummary) + ' has not been deployed. Click Manage Child Trigger and try again.', SObjectDomain.Errors.getAll()[1].message);
-		System.assertEquals(LookupRollupSummary__c.Active__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[1]).field);
-	}
-	
-	private testmethod static void testInsertRelationshipFieldValidation()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountIdX';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'Amount';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Field does not exist.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(LookupRollupSummary__c.RelationShipField__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
-	}		
-	
-	private testmethod static void testInsertFieldToAggregateValidation()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'AmountX';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Field does not exist.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(LookupRollupSummary__c.FieldToAggregate__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
-	}		
-	
-	private testmethod static void testInsertAggregateResultFieldValidation()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'Amount';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenueX';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Field does not exist.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(LookupRollupSummary__c.AggregateResultField__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
-	}	
-	
-	private testmethod static void testInsertBadFieldTypesStringNotValid()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'Name';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Only Date/DateTime/Time/Numeric fields are allowed', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(rollupSummary, ((SObjectDomain.ObjectError)SObjectDomain.Errors.getAll()[0]).record);
-	}	
+    // TODO: Write a test to validate the criteria fields are specified when criteria is specified
+    // ...      
+    
+    private testmethod static void testInsertActiveValidation()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Max Birthday for Contacts related to an Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Contact';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'LastCURequestDate';
+        rollupSummary.AggregateOperation__c = 'Count';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Apex Trigger ' + RollupSummaries.makeTriggerName(rollupSummary) + ' has not been deployed. Click Manage Child Trigger and try again.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(LookupRollupSummary__c.Active__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
+    }
+    
+    private testmethod static void testInsertParentObjectValidation()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'AccountX';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'Amount';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Object does not exist.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(LookupRollupSummary__c.ParentObject__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
+    }
+    
+    private testmethod static void testInsertChildObjectValidation()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'OpportunityX';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'Amount';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(2, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Object does not exist.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(LookupRollupSummary__c.ChildObject__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
+        System.assertEquals('Apex Trigger ' + RollupSummaries.makeTriggerName(rollupSummary) + ' has not been deployed. Click Manage Child Trigger and try again.', SObjectDomain.Errors.getAll()[1].message);
+        System.assertEquals(LookupRollupSummary__c.Active__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[1]).field);
+    }
+    
+    private testmethod static void testInsertRelationshipFieldValidation()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountIdX';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'Amount';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Field does not exist.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(LookupRollupSummary__c.RelationShipField__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
+    }       
+    
+    private testmethod static void testInsertFieldToAggregateValidation()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'AmountX';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Field does not exist.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(LookupRollupSummary__c.FieldToAggregate__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
+    }       
+    
+    private testmethod static void testInsertAggregateResultFieldValidation()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'Amount';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenueX';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Field does not exist.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(LookupRollupSummary__c.AggregateResultField__c, ((SObjectDomain.FieldError)SObjectDomain.Errors.getAll()[0]).field);
+    }   
+    
+    private testmethod static void testInsertBadFieldTypesStringNotValid()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'Name';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Only Date/DateTime/Time/Numeric fields are allowed', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(rollupSummary, ((SObjectDomain.ObjectError)SObjectDomain.Errors.getAll()[0]).record);
+    }   
 
-	private testmethod static void testInsertBadFieldTypeSumNotValid()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = null;
-		rollupSummary.FieldToAggregate__c = 'CloseDate';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'SLAExpirationDate__c';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Sum/Avg doesnt looks like valid for dates ! Still want, then implement the IRollerCoaster yourself and change this class as required.', SObjectDomain.Errors.getAll()[0].message);
-		System.assertEquals(rollupSummary, ((SObjectDomain.ObjectError)SObjectDomain.Errors.getAll()[0]).record);
-	}	
-	
-	private testmethod static void testTriggerAndTestClassNaming()
-	{	
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		System.assertEquals('dlrs_ContactTrigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'Contact')));		
-		System.assertEquals('dlrs_ContactTest', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'Contact')));		
-		System.assertEquals('dlrs_pse_AssignmentTrigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'pse__Assignment__c')));		
-		System.assertEquals('dlrs_pse_AssignmentTest', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'pse__Assignment__c')));		
-		System.assertEquals('dlrs_MyCustomObjectTrigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'MyCustomObject__c')));		
-		System.assertEquals('dlrs_MyCustomObjectTest', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'MyCustomObject__c')));
-		System.assertEquals('dlrs_dlrs_LookupChildAReallyRea06Trigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'dlrs__LookupChildAReallyReallyReallyBigBigName__c')));		
-		System.assertEquals('dlrs_dlrs_LookupChildAReallyRealla06Test', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'dlrs__LookupChildAReallyReallyReallyBigBigName__c')));		
-	}
-	
-	private testmethod static void testRelationshipCriteriaFieldsValidationSingle()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = 'Stage = \'Won\'';
-		rollupSummary.RelationShipCriteriaFields__c = 'Stage';
-		rollupSummary.FieldToAggregate__c = 'Amount';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Field Stage does not exist on the child object.', SObjectDomain.Errors.getAll()[0].message);		
-	}	
+    private testmethod static void testInsertBadFieldTypeSumNotValid()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = null;
+        rollupSummary.FieldToAggregate__c = 'CloseDate';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'SLAExpirationDate__c';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Sum/Avg doesnt looks like valid for dates ! Still want, then implement the IRollerCoaster yourself and change this class as required.', SObjectDomain.Errors.getAll()[0].message);
+        System.assertEquals(rollupSummary, ((SObjectDomain.ObjectError)SObjectDomain.Errors.getAll()[0]).record);
+    }   
+    
+    private testmethod static void testTriggerAndTestClassNaming()
+    {   
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        System.assertEquals('dlrs_ContactTrigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'Contact')));        
+        System.assertEquals('dlrs_ContactTest', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'Contact')));       
+        System.assertEquals('dlrs_pse_AssignmentTrigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'pse__Assignment__c')));      
+        System.assertEquals('dlrs_pse_AssignmentTest', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'pse__Assignment__c')));     
+        System.assertEquals('dlrs_MyCustomObjectTrigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'MyCustomObject__c')));       
+        System.assertEquals('dlrs_MyCustomObjectTest', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'MyCustomObject__c')));
+     //AW   System.assertEquals('dlrs_dlrs_LookupChildAReallyRea06Trigger', RollupSummaries.makeTriggerName(new LookupRollupSummary__c(ChildObject__c = 'LookupChildAReallyReallyReallyBigBigName__c')));     
+     //AW   System.assertEquals('dlrs_dlrs_LookupChildAReallyRealla06Test', RollupSummaries.makeTriggerTestName(new LookupRollupSummary__c(ChildObject__c = 'LookupChildAReallyReallyReallyBigBigName__c')));     
+    }
+    
+    private testmethod static void testRelationshipCriteriaFieldsValidationSingle()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = 'Stage = \'Won\'';
+        rollupSummary.RelationShipCriteriaFields__c = 'Stage';
+        rollupSummary.FieldToAggregate__c = 'Amount';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Field Stage does not exist on the child object.', SObjectDomain.Errors.getAll()[0].message);       
+    }   
 
-	private testmethod static void testRelationshipCriteriaFieldsValidationMulti()
-	{
-		// Test supported?
-		if(!TestContext.isSupported())
-			return;
-		
-		LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
-		rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
-		rollupSummary.ParentObject__c = 'Account';
-		rollupSummary.ChildObject__c = 'Opportunity';
-		rollupSummary.RelationShipField__c = 'AccountId';
-		rollupSummary.RelationShipCriteria__c = 'Stage = \'Won\'';
-		rollupSummary.RelationShipCriteriaFields__c = 'Stage\r\nAnother';
-		rollupSummary.FieldToAggregate__c = 'Amount';
-		rollupSummary.AggregateOperation__c = 'Sum';
-		rollupSummary.AggregateResultField__c = 'AnnualRevenue';
-		rollupSummary.Active__c = true;
-		rollupSummary.CalculationMode__c = 'Realtime';
-		SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );		
-		SObjectDomain.triggerHandler(RollupSummaries.class);		
-		System.assertEquals(1, SObjectDomain.Errors.getAll().size());	
-		System.assertEquals('Fields Stage,Another do not exist on the child object.', SObjectDomain.Errors.getAll()[0].message);		
-	}	
+    private testmethod static void testRelationshipCriteriaFieldsValidationMulti()
+    {
+        // Test supported?
+        if(!TestContext.isSupported())
+            return;
+        
+        LookupRollupSummary__c rollupSummary = new LookupRollupSummary__c();
+        rollupSummary.Name = 'Total Opportunities into Annual Revenue on Account';
+        rollupSummary.ParentObject__c = 'Account';
+        rollupSummary.ChildObject__c = 'Opportunity';
+        rollupSummary.RelationShipField__c = 'AccountId';
+        rollupSummary.RelationShipCriteria__c = 'Stage = \'Won\'';
+        rollupSummary.RelationShipCriteriaFields__c = 'Stage\r\nAnother';
+        rollupSummary.FieldToAggregate__c = 'Amount';
+        rollupSummary.AggregateOperation__c = 'Sum';
+        rollupSummary.AggregateResultField__c = 'AnnualRevenue';
+        rollupSummary.Active__c = true;
+        rollupSummary.CalculationMode__c = 'Realtime';
+        SObjectDomain.Test.Database.onInsert(new LookupRollupSummary__c[] { rollupSummary } );      
+        SObjectDomain.triggerHandler(RollupSummaries.class);        
+        System.assertEquals(1, SObjectDomain.Errors.getAll().size());   
+        System.assertEquals('Fields Stage,Another do not exist on the child object.', SObjectDomain.Errors.getAll()[0].message);        
+    }   
 }

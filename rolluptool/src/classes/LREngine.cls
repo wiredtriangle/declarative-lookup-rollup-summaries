@@ -48,7 +48,7 @@ public class LREngine {
 				because we want client or calling code to have this freedom to do some post processing and update when required.
 	*/
 	public static Sobject[] rollUp(Context ctx, Sobject[] detailRecordsFromTrigger) {
-		
+
 		// API name of the lookup field on detail sobject
         String lookUpFieldName = ctx.lookupField.getName();
 		        
@@ -89,7 +89,7 @@ public class LREngine {
     		// i.e. SUM(Amount) Amount
     		String alias = 'lre'+exprIdx++; // Calculate an alias, using field name blew the 25 character limit in some cases
     		soqlProjection += ', ' + rsf.operation + '(' + rsf.detail.getName() + ') ' + alias;
-    		detail2MasterFldMap.put(rsf.detail.getName(), rsf.master.getName());
+    		detail2MasterFldMap.put(rsf.detail.getName(), rsf.master.getName());System.debug('AW detail2MasterFldMap.put('+rsf.detail.getName()+','+rsf.master.getName()+')');
     		detail2AliasMap.put(rsf.detail.getName(), alias);
     	}
 		
@@ -108,7 +108,7 @@ public class LREngine {
     	String soql = String.format(SOQL_TEMPLATE, new String[]{soqlProjection, detailTblName, whereClause, grpByFld});
 
     	// aggregated results 
-    	List<AggregateResult> results = Database.query(soql);
+    	List<AggregateResult> results = Database.query(soql);System.debug('AW soql is '+soql);
     	
     	for (AggregateResult res : results){
 			Id masterRecId = (Id)res.get(grpByFld);
@@ -120,7 +120,7 @@ public class LREngine {
 			
 			for (String detailFld : detail2MasterFldMap.keySet()) {
 				Object aggregatedDetailVal = res.get(detail2AliasMap.get(detailFld));
-				System.debug(LoggingLevel.INFO, 'New aggregarte value ' + aggregatedDetailVal + ' for master ' + masterRecId);
+				System.debug(LoggingLevel.INFO, 'New aggregarte value ' + aggregatedDetailVal + ' for master ' + masterRecId + ' for field ' + detailFld);
 				masterObj.put(detail2MasterFldMap.get(detailFld), aggregatedDetailVal);
 			} 			
 			// Remove master Id record as its been processed   	
